@@ -140,6 +140,7 @@
       var pendulumWidth = 5;
       var rotationPointX = canvas.width / 2 + 15;
       var rotationPointY = 30;
+      var shadowDistance = 10;
 
       anim.setStage(function(){
         //update
@@ -154,21 +155,44 @@
         //context.fillStyle = "white";
         //context.fill();
         
-        //draw shaft
-        context.beginPath();
         var endPointX = rotationPointX + (pendulumLength * Math.cos(theta));
         var endPointY = rotationPointY + (pendulumLength * Math.sin(theta));
+        
+        //draw shaft shadow
+        context.beginPath();
+        context.moveTo(rotationPointX + shadowDistance, rotationPointY + shadowDistance + 28);
+        context.lineTo(endPointX + shadowDistance, endPointY + shadowDistance);
+        context.lineWidth = pendulumWidth;
+        context.lineCap = "round";
+        context.strokeStyle = "#333";
+        context.shadowColor = "#333";
+        context.shadowBlur = 10;
+        context.stroke();
+
+        //draw bottom circle shadow
+        context.beginPath();
+        context.arc(endPointX + shadowDistance, endPointY + shadowDistance, 30, 0, 2 * Math.PI, false);
+        context.fillStyle = "#333";
+        context.shadowColor = "#333";
+        context.shadowBlur = 10;
+        context.fill();
+        
+        //draw shaft
         context.beginPath();
         context.moveTo(rotationPointX, rotationPointY);
         context.lineTo(endPointX, endPointY);
         context.lineWidth = pendulumWidth;
         context.lineCap = "round";
         context.strokeStyle = "#ddd";
+        context.shadowColor = "#aaa";
+        context.shadowBlur = 5;
         context.stroke();
         
         //draw bottom circle
         context.beginPath();
         context.arc(endPointX, endPointY, 30, 0, 2 * Math.PI, false);
+        context.shadowColor = "#444";
+        context.shadowBlur = 3;
         var grd = context.createRadialGradient(endPointX - 50, endPointY - 50, 30, endPointX + 50, endPointY + 50, 30);
         grd.addColorStop(0, "#444");
         grd.addColorStop(0.5, "#aaa");
